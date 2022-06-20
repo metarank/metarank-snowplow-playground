@@ -1,0 +1,3 @@
+[submodule "iglu"]
+	path = iglu
+	url = https://gitlab.com/minds/iglu-registry.git

@@ -9,6 +9,7 @@ services:
       - EDGE_PORT=4566
       - SERVICES=dynamodb,cloudwatch,kinesis
       - KINESIS_PROVIDER=kinesis-mock
+      - AWS_CBOR_DISABLE=true
       - KINESIS_INITIALIZE_STREAMS=good:1:us-east-1,bad:1:us-east-1,enrich:1:us-east-1,pii:1:us-east-1,enrichbad:1:us-east-1
     ports:
       - '4566:4566'
@@ -27,7 +28,8 @@ services:
       - .:/snowplow/
 
   enrich:
-    image: snowplow/snowplow-enrich-kinesis:3.1.5
+    #image: snowplow/snowplow-enrich-kinesis:3.1.5 # broken, see https://github.com/snowplow/enrich/pull/632
+    image: metarank/snowplow-enrich-kinesis:3.1.5-ssl
     command: --config /snowplow/enrich.hocon --iglu-config /snowplow/iglu.json --enrichments /snowplow/enrichments
     depends_on: 
       - collect

@@ -53,7 +53,7 @@
       "type": "Kinesis"
 
       # Name of the Kinesis stream to write to
-      "streamName": "enriched"
+      "streamName": "enrich"
 
       # Optional. Region where the Kinesis stream is located
       # This field is optional if it can be resolved with AWS region provider chain.
@@ -114,6 +114,8 @@
       # Optional. Server port to connect to for Kinesis.
       # Needs to be specified along with customEndpoint
       "customPort": 4566
+
+      "verifyCertificates": false
 
       # Optional. Use a custom Cloudwatch endpoint.
       # Note this does not accept protocols or paths, only host names or ip addresses.
@@ -200,6 +202,7 @@
       # Optional. Server port to connect to for Kinesis.
       # Needs to be specified along with customEndpoint
       "customPort": 4566
+      "verifyCertificates": false
 
       # Optional. Use a custom Cloudwatch endpoint.
       # Note this does not accept protocols or paths, only host names or ip addresses.
@@ -278,6 +281,7 @@
       # Optional. Server port to connect to for Kinesis.
       # Needs to be specified along with customEndpoint
       "customPort": 4566
+      "verifyCertificates": false
 
       # Optional. Use a custom Cloudwatch endpoint.
       # Note this does not accept protocols or paths, only host names or ip addresses.

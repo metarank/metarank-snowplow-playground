@@ -2,9 +2,16 @@ version: '3.9'
 
 
 services:
+  iglu:
+    image: nginx:latest
+    ports:
+      - '8081:80'
+    volumes:
+      - ./iglu:/usr/share/nginx/html
+
   localstack:
     image: localstack/localstack:latest
-    environment: 
+    environment:
       - AWS_DEFAULT_REGION=us-east-1
       - EDGE_PORT=4566
       - SERVICES=dynamodb,cloudwatch,kinesis
@@ -16,25 +23,25 @@ services:
 
   collect:
     image: snowplow/scala-stream-collector-kinesis:2.6.1-focal
-    ports: 
+    ports:
       - '8080:8080'
     command: --config /snowplow/collect.hocon
     environment:
       - AWS_SECRET_ACCESS_KEY=default
       - AWS_ACCESS_KEY=default
-    depends_on: 
+    depends_on:
       - localstack
-    volumes: 
+    volumes:
       - .:/snowplow/
 
   enrich:
     #image: snowplow/snowplow-enrich-kinesis:3.1.5 # broken, see https://github.com/snowplow/enrich/pull/632
     image: metarank/snowplow-enrich-kinesis:3.1.5-ssl
     command: --config /snowplow/enrich.hocon --iglu-config /snowplow/iglu.json --enrichments /snowplow/enrichments
-    depends_on: 
+    depends_on:
       - collect
       - localstack
-    volumes: 
+    volumes:
       - .:/snowplow/
     environment:
       - AWS_REGION=us-east-1

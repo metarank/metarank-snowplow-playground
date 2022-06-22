@@ -1,8 +1,11 @@
 package ai.metarank
 
+import cats.data.Validated
+import com.snowplowanalytics.snowplow.analytics.scalasdk.Event
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.kinesis.KinesisClient
 import software.amazon.awssdk.services.kinesis.model.{GetRecordsRequest, GetShardIteratorRequest, ShardIteratorType}
+
 import scala.jdk.CollectionConverters._
 import java.net.URI
 
@@ -23,6 +26,10 @@ object PollKinesis {
     )
 
     val records = client.getRecords(GetRecordsRequest.builder().shardIterator(iterator.shardIterator()).build())
-    records.records().asScala.foreach(r => println(new String(r.data().asByteArray())))
+    val events  = records.records().asScala.map(r => new String(r.data().asByteArray()))
+    val parsed = events.map(Event.parse).collect { case Validated.Valid(a) =>
+      a
+    }
+    val br = 1
   }
 }

@@ -14,12 +14,12 @@
         }
       },
       {
-        "name": "Minds local",
+        "name": "Minds",
         "priority": 0,
         "vendorPrefixes": [ "com.minds" ],
         "connection": {
-          "embedded": {
-            "path": "/snowplow/iglu"
+          "http": {
+            "uri": "http://iglu:80"
           }
         }
       }
